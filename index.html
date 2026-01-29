@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene Support | Healing Together</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #fdfbfb;
+            --accent-soft: #ebedee;
+            --text-dark: #1a1c2c; /* Deepened for readability */
+            --text-light: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.45); /* Balanced transparency */
+            --nav-bg: rgba(255, 255, 255, 0.85); /* Solid for navigation clarity */
+            --overlay: rgba(255, 255, 255, 0.15);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            font-size: 18px; /* Base size up */
+        }
+
+        #app-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            transition: background-image 1.2s ease-in-out;
+        }
+
+        /* Subtle overlay to help text pop */
+        #app-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+        }
+
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            display: flex;
+            justify-content: center;
+            padding: 15px 40px;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            margin: 0 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+        }
+
+        nav a:hover {
+            opacity: 1;
+            color: #4a4e69;
+            transform: scale(1.05);
+        }
+
+        main {
+            padding-top: 140px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        section {
+            display: none;
+            padding: 50px;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home/Timer Section */
+        .timer-display {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .timer-display h1 {
+            font-family: 'Lora', serif;
+            font-size: 3.2em; /* Enlarge */
+            font-weight: 400;
+            color: #1a1c2c;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.8); /* Subtle white glow to separate from BG */
+        }
+
+        .timer-display p {
+            font-size: 1.25em; /* Text up */
+            line-height: 1.6;
+            text-shadow: 0 1px 10px rgba(255,255,255,0.6);
+        }
+
+        #days-count {
+            font-family: 'Lora', serif;
+            font-size: 7.5em; /* Bold impact */
+            font-weight: 400;
+            color: #22223b;
+            display: block;
+            margin: 10px 0;
+            font-style: italic;
+            text-shadow: 0 4px 20px rgba(255,255,255,0.9); /* Stronger glow for the number */
+        }
+
+        /* Resources Section */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card iframe {
+            width: 100%;
+            border-radius: 15px;
+            aspect-ratio: 16/9;
+        }
+
+        .article-card {
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background: #4a4e69;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #22223b;
+            transform: translateY(-2px);
+        }
+
+        input[type="date"] {
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            font-size: 1em;
+        }
+
+        /* Community mockup */
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 15px;
+        }
+
+        .chat-msg { margin-bottom: 18px; }
+        .chat-msg strong { color: #4a4e69; }
+
+        /* Candle Feature */
+        .candle-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            font-size: 0.85em;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .candle-action:hover {
+            background: rgba(255, 193, 7, 0.2);
+            border-color: rgba(255, 193, 7, 0.4);
+        }
+
+        .candle-action.lit {
+            background: rgba(255, 193, 7, 0.3);
+            border-color: #ffc107;
+            color: #856404;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(255, 193, 7, 0.2); }
+            to { box-shadow: 0 0 15px rgba(255, 193, 7, 0.5); }
+        }
+
+        .candle-count {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-background"></div>
+
+<nav>
+    <a href="javascript:void(0)" onclick="showSection('timer')">Home</a>
+    <a href="javascript:void(0)" onclick="showSection('resources')">Resources</a>
+    <a href="javascript:void(0)" onclick="showSection('community')">Community</a>
+</nav>
+
+<main>
+    <!-- Timer Section -->
+    <section id="timer" class="active glass-panel" style="border: none; box-shadow: none; background: transparent;">
+        <div class="timer-display">
+            <h1>Moments of Remembrance</h1>
+            <p style="font-style: italic; opacity: 0.9;">Select a date to see how many days you've carried their light.</p>
+            <input type="date" id="start-date" onchange="calculateDays()" style="background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); color: #1a1c2c; font-family: inherit;">
+            
+            <div id="days-result" style="display:none;">
+                <span id="days-count">0</span>
+                <p style="letter-spacing: 3px; text-transform: uppercase; font-size: 1em; font-weight: 600; opacity: 0.8;">days since that moment</p>
+            </div>
+            
+            <div class="bg-controls" style="margin-top: 60px;">
+                <input type="file" id="bg-upload" accept="image/*" onchange="updateBackground(event)" style="display:none">
+                <button onclick="document.getElementById('bg-upload').click()" style="background: rgba(26, 28, 44, 0.08); border: 1px solid rgba(26, 28, 44, 0.2); color: #1a1c2c;">Change Background</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="glass-panel">
+        <h2 style="font-family: 'Lora', serif; font-size: 2.5em;">Healing Resources</h2>
+        <p style="margin-bottom: 40px;">Videos and practices to help find a moment of peace.</p>
+        
+        <div class="resource-grid">
+            <div class="video-card">
+                <h3>Mindful Meditation</h3>
+                <iframe src="https://www.youtube.com/embed/2FGR-OspxsU" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-card">
+                <h3>Understanding Grief</h3>
+                <iframe src="https://www.youtube.com/embed/gsYL4PC0hyk" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px;">
+            <h3>Helpful Articles</h3>
+            <div class="article-card glass-panel" style="background: rgba(255,255,255,0.5);">
+                <h4>The Five Stages of Grief</h4>
+                <p>A guide to understanding the emotional process of loss...</p>
+                <button>Read More</button>
+            </div>
+            <div class="article-card glass-panel" style="background: rgba(255,255,255,0.5);">
+                <h4>Self-Care While Grieving</h4>
+                <p>Practical steps to look after your physical and mental health...</p>
+                <button>Read More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="glass-panel">
+        <h2 style="font-family: 'Lora', serif; font-size: 2.5em;">Community Support</h2>
+        <p style="margin-bottom: 40px;">Share your story or find comfort in the words of others.</p>
+        
+        <div id="login-mock">
+            <p>Please sign in to join the conversation.</p>
+            <input type="text" placeholder="Username" style="padding:15px; border-radius:15px; border:1px solid rgba(0,0,0,0.1); margin-bottom:15px; width: 300px;"><br>
+            <button onclick="mockLogin()">Sign In</button>
+        </div>
+
+        <div id="chat-interface" style="display:none;">
+            <div class="chat-box" id="chat-box">
+                <div class="chat-msg">
+                    <strong>Sarah:</strong> Thinking of everyone today. You are not alone.
+                    <div class="candle-action" onclick="toggleCandle(this)">
+                        <span>🕯️</span> <span class="candle-text">Light a candle</span> (<span class="candle-count">12</span>)
+                    </div>
+                </div>
+                <div class="chat-msg">
+                    <strong>David:</strong> The timer feature really helps me see how far I've come.
+                    <div class="candle-action" onclick="toggleCandle(this)">
+                        <span>🕯️</span> <span class="candle-text">Light a candle</span> (<span class="candle-count">8</span>)
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chat-input" placeholder="Type a message..." style="flex-grow: 1; padding: 15px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.1);">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    function showSection(id) {
+        // Hide all sections
+        const sections = document.querySelectorAll('section');
+        sections.forEach(s => {
+            s.classList.remove('active');
+        });
+        
+        // Show the targeted section
+        const target = document.getElementById(id);
+        if (target) {
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function calculateDays() {
+        const dateInput = document.getElementById('start-date').value;
+        if (!dateInput) return;
+
+        const start = new Date(dateInput);
+        const today = new Date();
+        // Reset hours for accurate day calculation
+        start.setHours(0,0,0,0);
+        today.setHours(0,0,0,0);
+        
+        const diffTime = Math.abs(today - start);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        document.getElementById('days-count').innerText = diffDays;
+        document.getElementById('days-result').style.display = 'block';
+    }
+
+    function updateBackground(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('app-background').style.backgroundImage = `url(${e.target.result})`;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function mockLogin() {
+        document.getElementById('login-mock').style.display = 'none';
+        document.getElementById('chat-interface').style.display = 'block';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        if (!input.value) return;
+
+        const chatBox = document.getElementById('chat-box');
+        const msg = document.createElement('div');
+        msg.className = 'chat-msg';
+        msg.innerHTML = `
+            <strong>You:</strong> ${input.value}
+            <div class="candle-action" onclick="toggleCandle(this)">
+                <span>🕯️</span> <span class="candle-text">Light a candle</span> (<span class="candle-count">0</span>)
+            </div>
+        `;
+        chatBox.appendChild(msg);
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function toggleCandle(element) {
+        const countSpan = element.querySelector('.candle-count');
+        const textSpan = element.querySelector('.candle-text');
+        let count = parseInt(countSpan.innerText);
+
+        if (element.classList.contains('lit')) {
+            element.classList.remove('lit');
+            countSpan.innerText = count - 1;
+            textSpan.innerText = "Light a candle";
+        } else {
+            element.classList.add('lit');
+            countSpan.innerText = count + 1;
+            textSpan.innerText = "Candle lit";
+        }
+    }
+</script>
+
+</body>
+</html>
