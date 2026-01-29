@@ -23,7 +23,36 @@
             font-family: 'Quicksand', sans-serif;
             color: var(--text-dark);
             scroll-behavior: smooth;
-            font-size: 18px; /* Base size up */
+            font-size: 16px; /* Optimized base size */
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            body, html {
+                font-size: 14px;
+            }
+            main {
+                padding-top: 100px;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            nav {
+                width: 90%;
+                padding: 10px 10px;
+            }
+            nav a {
+                margin: 0 10px;
+                font-size: 0.9em;
+            }
+            .timer-display h1 {
+                font-size: 2em;
+            }
+            #days-count {
+                font-size: 4.5em;
+            }
+            section {
+                padding: 30px 20px;
+            }
         }
 
         #app-background {
